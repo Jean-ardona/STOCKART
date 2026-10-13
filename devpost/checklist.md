@@ -19,7 +19,7 @@ Build mode: fast (stop after every slice, verify, wait for confirmation)
   Learner check: Open localhost:5173, confirm the heading renders with no console errors.
   Commit: `chore: scaffold project, install deps, configure Vite + Tailwind + Dexie + Supabase`
 
-- [ ] **2. Offline check — production build with service worker verified offline**
+- [x] **2. Offline check — production build with service worker verified offline**
   Becomes usable: The app shell loads with DevTools → Network → Offline active.
   Why now: Service workers only activate in production builds. A misconfigured PWA caught here costs 10 minutes; caught after 8 screens it costs hours.
   PRD ref: `prd.md > States and Boundaries` (offline behavior)

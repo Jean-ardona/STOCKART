@@ -14,7 +14,7 @@ export default defineConfig({
       manifest: {
         name: 'Stockart',
         short_name: 'Stockart',
-        description: 'Shop management — POS, stock, dashboard',
+        description: 'Shop management - POS, stock, dashboard',
         theme_color: '#1C3557',
         background_color: '#F5F0E8',
         display: 'standalone',
