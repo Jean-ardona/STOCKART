@@ -128,7 +128,7 @@ Implements `prd.md > Look and Feel`, `design/DESIGN.md` ("Registre" direction).
 
 **Login/setup cover:** ink block 520×560, 14px margin-red left strip. Paper label plate with inset 1px ink outline. Mono 11px uppercase labels, bottom-border-only inputs.
 
-**Product grid:** ledger table, 3 cols, 6 per page with pagination. 1px ink borders, no gaps.
+**Product grid:** ledger table, 4 cols, 16 per page with pagination. Compact cells. 1px ink borders, no gaps.
 
 **Receipt strip:** 330px, receipt bg, 1px rule border, 3px margin-red left border, Mono 13px. "Articles" row above TOTAL. Checkout button: ink bg, cream text, Sans 600, letter-spacing .1em.
 

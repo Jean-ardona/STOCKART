@@ -39,7 +39,7 @@ Build mode: fast (stop after every slice, verify, wait for confirmation)
   Learner check: Sign up, complete setup, log out, log back in, then disable network in DevTools and reload — confirm you land on the POS each time without errors.
   Commit: `feat: auth (login/signup/setup), AuthGuard, SettingsPanel, sample product seed`
 
-- [ ] **3b. Design foundation — "Registre" visual identity on auth screens, sidebar, shell**
+- [x] **3b. Design foundation — "Registre" visual identity on auth screens, sidebar, shell**
   Becomes usable: Login, setup, sidebar, AppShell, SettingsPanel, SyncIndicator all match the "Registre" design from DESIGN.md and the login screenshot.
   Why now: fonts and tokens established before POS build so slice 4 starts styled.
   PRD ref: `prd.md > Look and Feel`
@@ -49,7 +49,7 @@ Build mode: fast (stop after every slice, verify, wait for confirmation)
   Learner check: Open the app, go to /login — confirm it looks like the ledger-cover screenshot (ink background, red strip, paper form card). Open the POS placeholder and confirm the sidebar matches (ink bg, red right rule, underline active state, sync stamp at bottom).
   Commit: `feat: design foundation — Registre identity, IBM Plex fonts, auth screens, sidebar`
 
-- [ ] **4. POS core — product grid, receipt strip, checkout (neutral styling)**
+- [x] **4. POS core — product grid, receipt strip, checkout (neutral styling)**
   Becomes usable: Full POS logic works — tap products, lines appear on receipt, adjust quantities, checkout saves sale to Dexie, stock updates, PDF prompt appears.
   Why now: This is the unique kernel. It must work correctly before any visual polish is applied.
   PRD ref: `prd.md > POS Screen`, `prd.md > Features and Behavior > POS Screen`

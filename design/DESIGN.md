@@ -24,7 +24,7 @@ Light mode only. No gradients, no shadows, no rounded corners (radius 0 everywhe
 - Search bar: 1px ink border, no radius, transparent, placeholder "Search products   /".
 
 ## POS functional additions (small)
-- Product grid is PAGINATED: 6 products per page (3 columns x 2 rows). Footer row: "6 of 15 products" (mono 12px) on the left, pagination on the right: ‹ 1 2 3 › as 30px square buttons, 1px ink border; current page = ink background + cream text. Search filters across all pages and resets to page 1.
+- Product grid is PAGINATED: 16 products per page (4 columns x 4 rows). Footer row: "1–16 of 30 products" range format (mono 12px) on the left, pagination on the right: ‹ 1 2 › as 30px square buttons, 1px ink border; current page = ink background + cream text. Search filters across all pages and resets to page 1.
 - Receipt shows an "Items" row (total quantity) above TOTAL, at 70% opacity.
 - No categories, no extra data fields.
 

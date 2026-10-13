@@ -50,7 +50,7 @@ Source: `design/DESIGN.md` ("Registre" direction), `scope.md > Inspiration & Ide
 - **Radius:** 0 everywhere — no rounded corners.
 - **Sidebar:** ink background, cream text, 190px wide, 4px margin-red rule on its RIGHT edge. Active nav item: full opacity + 2px cream underline. Inactive: 70% opacity. Bottom: sync stamp (mono 11px, 2px cream border, rotated −3°).
 - **Stamps:** BAS, ÉPUISÉ, PAYÉ — Mono 600, 2px solid margin-red border, margin-red text, slight rotation, radius 0.
-- **Product grid:** ledger table, 3 columns × 2 rows = 6 products per page with pagination. 1px ink border, no gaps. Cell: name Sans 600, price Mono 17px, stock Sans 12px 60% opacity.
+- **Product grid:** ledger table, 4 columns × 4 rows = 16 products per page with pagination. Compact cells. 1px ink border, no gaps. Cell: name Sans 600, price Mono 14px, stock Sans 11px 60% opacity. Pagination label shows range e.g. "1–16 of 30 products".
 - **Receipt strip:** 330px wide, receipt background, 1px rule border, 3px margin-red LEFT border, Mono 13px. "Articles" row (total qty) above TOTAL. Checkout button: ink bg, cream text, Sans 600 14px, letter-spacing .1em.
 - **Login / setup screens:** ink cover block (520×560) with 14px margin-red left strip. Paper-colored label plate with inset 1px ink outline. Mono 11px uppercase labels, inputs with bottom-border only.
 - **Charts:** plain SVG/CSS, hand-drawn pen-stroke aesthetic, no chart library.
@@ -72,8 +72,8 @@ Source: `design/DESIGN.md` ("Registre" direction), `scope.md > Inspiration & Ide
 ### POS Screen
 
 **Product grid (left panel)**
-- Displays all active (non-archived) products in a ledger-table grid: 3 columns × 2 rows = 6 products per page.
-- Pagination footer: "6 sur N produits" (Mono 12px) on the left; ‹ 1 2 3 › page buttons (30px square, 1px ink border; active page = ink bg + cream text) on the right.
+- Displays all active (non-archived) products in a ledger-table grid: 4 columns × 4 rows = 16 products per page.
+- Pagination footer: "1–16 of N products" range format (Mono 12px) on the left; ‹ 1 2 › page buttons (30px square, 1px ink border; active page = ink bg + cream text) on the right.
 - Each cell: name (Sans 600), price (Mono 17px), stock (Sans 12px 60% opacity). 1px ink border, no gaps, no card shadows.
 - Low stock (at or below threshold): a small red "BAS" stamp on the cell.
 - Out of stock (0): an "ÉPUISÉ" stamp; cell is at 50% opacity and not tappable.

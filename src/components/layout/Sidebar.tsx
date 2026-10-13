@@ -60,6 +60,7 @@ export default function Sidebar({ settings }: Props) {
         {/* Nav links */}
         <div style={{ flex: 1, padding: '8px 20px' }}>
           <NavLink to="/" end style={({ isActive }) => navStyle(isActive)}>{S.navPOS}</NavLink>
+          <NavLink to="/orders" style={({ isActive }) => navStyle(isActive)}>{S.navOrders}</NavLink>
           <NavLink to="/stock" style={({ isActive }) => navStyle(isActive)}>{S.navStock}</NavLink>
           <NavLink to="/dashboard" style={({ isActive }) => navStyle(isActive)}>{S.navDashboard}</NavLink>
         </div>
