@@ -1,0 +1,32 @@
+@import "tailwindcss";
+
+/* ─── Custom design tokens (Tailwind v4 CSS-based config) ─────────────────── */
+@theme {
+  --color-paper: #F5F0E8;
+  --color-paper-dark: #E8E0CC;
+  --color-ink: #1C3557;
+  --color-ink-light: #E8EEF4;
+  --color-margin: #C0392B;
+
+  /* Font families — files bundled in /public/fonts/ (added in slice 4b) */
+  --font-serif: 'Lora', Georgia, serif;
+  --font-mono: 'JetBrains Mono', 'Courier New', monospace;
+  --font-display: var(--font-serif); /* swapped to final choice in slice 4b */
+}
+
+/* ─── Base styles ─────────────────────────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-serif);
+}
