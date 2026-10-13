@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { db } from '../../lib/db'
 import { S } from '../../lib/strings'
 import AppShell from './AppShell'
+import LoadingPage from '../../pages/LoadingPage'
 import type { ShopSettings } from '../../types'
 
 /**
@@ -31,7 +32,7 @@ export default function AuthGuard() {
 
   // Still loading
   if (settings === undefined) {
-    return <div style={{ padding: '2rem' }}>{S.loading}</div>
+    return <LoadingPage />
   }
 
   // No local record

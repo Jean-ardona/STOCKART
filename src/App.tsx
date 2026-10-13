@@ -6,6 +6,7 @@ import POSPage from './pages/POSPage'
 import StockPage from './pages/StockPage'
 import DashboardPage from './pages/DashboardPage'
 import OrdersPage from './pages/OrdersPage'
+import LoadingPage from './pages/LoadingPage'
 import { PrintProvider } from './lib/printContext'
 
 function App() {
@@ -15,6 +16,7 @@ function App() {
         <Routes>
           <Route path="/login" element={<LoginPage />} />
           <Route path="/setup" element={<SetupPage />} />
+          <Route path="/loading" element={<LoadingPage />} />
           <Route element={<AuthGuard />}>
             <Route path="/" element={<POSPage />} />
             <Route path="/orders" element={<OrdersPage />} />
