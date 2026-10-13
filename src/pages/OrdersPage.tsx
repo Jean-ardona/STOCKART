@@ -6,6 +6,7 @@ import { formatCurrency, formatSaleNumber } from '../lib/formatCurrency'
 import { S } from '../lib/strings'
 import type { Sale, SaleItem, ShopSettings } from '../types'
 import ReceiptPreview from '../components/orders/ReceiptPreview'
+import ExportBar from '../components/orders/ExportBar'
 
 const mono = "'IBM Plex Mono', monospace"
 
@@ -90,6 +91,8 @@ function Orders({ shop }: { shop: ShopSettings }) {
         <h1 style={{ fontWeight: 600, fontSize: '26px', margin: 0 }}>{S.ordersTitle}</h1>
         <span style={{ fontFamily: mono, fontSize: '12px', opacity: 0.6 }}>{dateStr} · {timeStr}</span>
       </div>
+
+      <ExportBar shop={shop} />
 
       <div style={{ display: 'flex', gap: '24px', flex: 1, minHeight: 0, paddingBottom: '20px', overflow: 'hidden' }}>
         {/* Orders list */}

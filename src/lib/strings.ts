@@ -18,6 +18,11 @@ export const S = {
   syncSynced: 'SYNCED',
   syncPending: (n: number) => `PENDING (${n})`,
   syncOffline: 'OFFLINE',
+  syncOfflinePending: (n: number) => `OFFLINE · ${n} PENDING`,
+  syncPendingLabel: (sales: number, changes: number) =>
+    sales > 0 ? `PENDING · ${sales} SALE${sales === 1 ? '' : 'S'}` : `PENDING · ${changes} CHANGE${changes === 1 ? '' : 'S'}`,
+  syncOfflineLabel: (sales: number, changes: number) =>
+    sales > 0 ? `OFFLINE · ${sales} SALE${sales === 1 ? '' : 'S'} PENDING` : `OFFLINE · ${changes} CHANGE${changes === 1 ? '' : 'S'} PENDING`,
   syncAuthError: 'SIGN IN TO SYNC',
 
   // ── Login / sign-up ───────────────────────────────────────────────────────
@@ -123,6 +128,15 @@ export const S = {
   salesCount: (n: number) => `${n} sale${n === 1 ? '' : 's'}`,
   lowStockEmpty: 'Everything is well stocked.',
   ordersTitle: 'Orders',
+  exportTitle: 'Export operations',
+  exportFrom: 'From',
+  exportTo: 'To',
+  btnExportCsv: 'EXPORT CSV',
+  exportBadRange: 'Pick a valid period (start date before end date).',
+  exportNothing: 'No operations in this period.',
+  exportFailed: 'Export failed.',
+  exportDone: (sales: number, movements: number) =>
+    `Exported ${sales} sale${sales === 1 ? '' : 's'} and ${movements} stock movement${movements === 1 ? '' : 's'}.`,
   ordersSearchPlaceholder: 'Search by number or customer   /',
   ordersEmpty: 'No orders yet. Complete a sale on the POS screen.',
   ordersNoMatch: 'No order matches your search.',
@@ -137,6 +151,18 @@ export const S = {
   // ── Dashboard ─────────────────────────────────────────────────────────────
   dashboardTitle: 'Dashboard',
   todayRevenue: "Today's revenue",
+  last7Days: 'Last 7 days',
+  stockValue: 'Stock value',
+  vsYesterday: (pct: number) => `${pct >= 0 ? '▲' : '▼'} ${Math.abs(pct)}% vs yesterday`,
+  noSalesYesterday: 'No sales yesterday',
+  itemsAndAvg: (items: number, avg: string) => `${items} item${items === 1 ? '' : 's'} · avg ${avg}`,
+  productsLowOut: (products: number, lowOut: number) => `${products} products · ${lowOut} low or out`,
+  topProductsTitle: 'Top products · last 7 days',
+  soldRevenue: (qty: number, revenue: string) => `${qty} sold · ${revenue}`,
+  noTopProducts: 'No sales in the last 7 days.',
+  recentSalesTitle: 'Recent sales',
+  noRecentSales: 'No sales yet.',
+  viewAllOrders: 'View all orders →',
   todaySales: "Today's sales",
   chartTitle: 'Sales',
   btnDay: 'Day',

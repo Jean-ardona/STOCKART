@@ -8,7 +8,7 @@ export type ChartMode = 'day' | 'week'
 interface Bucket { label: string; revenueInt: number; count: number }
 
 const DAY_MS = 86_400_000
-const W = 760, H = 300
+const W = 760, H = 340
 const PAD = { left: 56, right: 8, top: 28, bottom: 34 }
 
 function startOfDay(d: Date) { const x = new Date(d); x.setHours(0, 0, 0, 0); return x }
