@@ -31,8 +31,5 @@ devpost/learner-profile.md
 .env.*
 !.env.example
 
-# Kiro curriculum files — not project code
-.kiro/
-
 #TRASH
 stockart-tmp
