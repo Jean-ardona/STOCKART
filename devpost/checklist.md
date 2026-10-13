@@ -136,3 +136,4 @@ Activity mode: [live app and editor, explicit static fallback, focused alternati
 ## Revisions
 
 - Tailwind v4 installed instead of v3 — npm resolved the latest version. v4 uses CSS-based config (`@theme` in index.css) instead of `tailwind.config.ts`. All custom tokens moved to `@theme` block in index.css. No product impact.
+- vite-plugin-pwa `generateSW` strategy dropped in favour of `injectManifest` — with Vite 8 (Rolldown), the Workbox async `closeBundle` hook timed out and `sw.js` was never written to `dist/`. Switched to `injectManifest` with a hand-written `src/sw.ts`, which Vite compiles as a normal module. `sw.js` now appears in `dist/` reliably.
