@@ -1,23 +1,21 @@
 @import "tailwindcss";
 
-/* ─── Custom design tokens (Tailwind v4 CSS-based config) ─────────────────── */
+/* ─── Design tokens — "Registre" direction ───────────────────────────────── */
 @theme {
-  --color-paper: #F5F0E8;
-  --color-paper-dark: #E8E0CC;
-  --color-ink: #1C3557;
-  --color-ink-light: #E8EEF4;
-  --color-margin: #C0392B;
+  /* Colors */
+  --color-paper:   #F3EEE2;   /* app background */
+  --color-ink:     #1B2A41;   /* text, sidebar, borders, buttons */
+  --color-margin:  #B3362B;   /* red rule + alert stamps only */
+  --color-receipt: #FFFDF7;   /* receipt paper */
+  --color-rule:    #D8D0BC;   /* thin borders on receipt */
 
-  /* Font families — files bundled in /public/fonts/ (added in slice 4b) */
-  --font-serif: 'Lora', Georgia, serif;
-  --font-mono: 'JetBrains Mono', 'Courier New', monospace;
-  --font-display: var(--font-serif); /* swapped to final choice in slice 4b */
+  /* Fonts — served by @fontsource (no CDN) */
+  --font-sans: 'IBM Plex Sans', system-ui, sans-serif;
+  --font-mono: 'IBM Plex Mono', 'Courier New', monospace;
 }
 
-/* ─── Base styles ─────────────────────────────────────────────────────────── */
-*, *::before, *::after {
-  box-sizing: border-box;
-}
+/* ─── Base ────────────────────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; }
 
 html, body, #root {
   height: 100%;
@@ -26,7 +24,16 @@ html, body, #root {
 }
 
 body {
-  background-color: var(--color-paper);
-  color: var(--color-ink);
-  font-family: var(--font-serif);
+  background-color: #F3EEE2;
+  color: #1B2A41;
+  font-family: 'IBM Plex Sans', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ─── Global resets aligned with "Registre" rules ────────────────────────── */
+/* radius 0 everywhere */
+*, *::before, *::after { border-radius: 0 !important; }
+
+button, input, select, textarea {
+  font-family: inherit;
 }

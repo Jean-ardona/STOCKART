@@ -43,16 +43,19 @@ The sidebar is always visible on the three main screens. It is discreet — not 
 
 ## Look and Feel
 
-Source: `scope.md > Inspiration & Identity`, learner's stated constraints.
+Source: `design/DESIGN.md` ("Registre" direction), `scope.md > Inspiration & Identity`.
 
-- **Background:** Warm off-white / cream — like aged ledger paper, not white.
-- **Primary accent:** Ink blue — for headings, active states, borders, key actions.
-- **Secondary accent:** Red margin line — a vertical rule on the left of the receipt and sidebar, echoing a ruled ledger page.
-- **Typography:** A serif font with character (not Inter, not Roboto). Candidates: Playfair Display, Lora, or similar. Used for headings and receipt content. A monospace font for receipt line items to reinforce the thermal-printer feel.
-- **Details:** Rubber-stamp style marks (PAID, LOW, OUT, SYNCED) rendered in CSS. Slightly rough edges on key UI elements to feel hand-made rather than pixel-perfect.
-- **Charts:** Hand-drawn aesthetic — plain SVG/CSS bars styled to look like pen strokes, no chart library.
-- **Animations:** CSS-only. No animation libraries. No printer sounds.
-- **Explicitly avoided:** Purple gradients, generic card grids, default sans-serif fonts, anything that looks like a generic AI-generated dashboard.
+- **Colors:** `paper` #F3EEE2 (app background) · `ink` #1B2A41 (text, sidebar, borders, buttons) · `margin` #B3362B (red rule + alert stamps only) · `receipt` #FFFDF7 (receipt paper) · `rule` #D8D0BC (thin borders on receipt). Light mode only. No gradients, no shadows.
+- **Typography (bundled via @fontsource — no CDN):** UI + headings: **IBM Plex Sans** (400, 600). Numbers, receipt, stamps, dates, labels: **IBM Plex Mono** (400, 600).
+- **Radius:** 0 everywhere — no rounded corners.
+- **Sidebar:** ink background, cream text, 190px wide, 4px margin-red rule on its RIGHT edge. Active nav item: full opacity + 2px cream underline. Inactive: 70% opacity. Bottom: sync stamp (mono 11px, 2px cream border, rotated −3°).
+- **Stamps:** BAS, ÉPUISÉ, PAYÉ — Mono 600, 2px solid margin-red border, margin-red text, slight rotation, radius 0.
+- **Product grid:** ledger table, 3 columns × 2 rows = 6 products per page with pagination. 1px ink border, no gaps. Cell: name Sans 600, price Mono 17px, stock Sans 12px 60% opacity.
+- **Receipt strip:** 330px wide, receipt background, 1px rule border, 3px margin-red LEFT border, Mono 13px. "Articles" row (total qty) above TOTAL. Checkout button: ink bg, cream text, Sans 600 14px, letter-spacing .1em.
+- **Login / setup screens:** ink cover block (520×560) with 14px margin-red left strip. Paper-colored label plate with inset 1px ink outline. Mono 11px uppercase labels, inputs with bottom-border only.
+- **Charts:** plain SVG/CSS, hand-drawn pen-stroke aesthetic, no chart library.
+- **Animations:** CSS-only. No animation libraries. No sounds.
+- **Explicitly avoided:** Purple, gradients, shadows, rounded corners, generic card grids, Inter/Roboto, anything that looks AI-generated.
 
 ---
 
@@ -69,14 +72,16 @@ Source: `scope.md > Inspiration & Identity`, learner's stated constraints.
 ### POS Screen
 
 **Product grid (left panel)**
-- Displays all active (non-archived) products as "shelf label" cards: name, price, current stock (small text).
-- Low stock (at or below threshold): a small red "LOW" stamp on the card.
-- Out of stock (0): an "OUT" stamp; the card is not tappable.
-- Search bar at the top; activates with the `/` keyboard shortcut.
-- Products are sorted alphabetically by default.
+- Displays all active (non-archived) products in a ledger-table grid: 3 columns × 2 rows = 6 products per page.
+- Pagination footer: "6 sur N produits" (Mono 12px) on the left; ‹ 1 2 3 › page buttons (30px square, 1px ink border; active page = ink bg + cream text) on the right.
+- Each cell: name (Sans 600), price (Mono 17px), stock (Sans 12px 60% opacity). 1px ink border, no gaps, no card shadows.
+- Low stock (at or below threshold): a small red "BAS" stamp on the cell.
+- Out of stock (0): an "ÉPUISÉ" stamp; cell is at 50% opacity and not tappable.
+- Search bar at the top (1px ink border, no radius, transparent bg, placeholder "Rechercher un produit /"); activates with the `/` keyboard shortcut. Search filters across all pages and resets to page 1.
 
 **Receipt strip (right panel)**
 - Receipt header: shop name + sale number formatted as `#0001` (zero-padded, 4 digits, generated locally and auto-incremented per device; one device per account assumed for the PoC).
+- Page header on POS (above the grid): screen title "Caisse" (Sans 600 26px) on the left, current date + time (Mono 12px 60% opacity) on the right.
 - Empty state: a blank strip of receipt paper with a faint "ready" indicator.
 - Tapping a product prints a new line at the bottom; the paper scrolls up one notch (CSS animation simulating thermal printing).
 - Tapping a product already on the receipt increments its quantity instead of adding a new line.
@@ -84,7 +89,7 @@ Source: `scope.md > Inspiration & Identity`, learner's stated constraints.
 - **Each sale line stores a snapshot of the product name and unit price at the time of sale.** Editing or archiving a product never alters past sales or revenue figures.
 - Quantity cannot exceed current stock. The + button is disabled at the stock limit.
 - Reducing quantity to 0: the line is struck through, then disappears (CSS transition).
-- Footer: live grand total, optional customer name text field, and "Checkout" button.
+- Footer: "Articles" row (total quantity across all lines, Mono, 70% opacity) above the live grand total, optional customer name text field (placeholder "Client (facultatif)"), and "ENCAISSER" checkout button.
 - If customer name is filled in, the receipt acts as an informal invoice (no tax, no legal format).
 
 **Checkout flow**

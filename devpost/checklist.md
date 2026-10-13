@@ -29,7 +29,7 @@ Build mode: fast (stop after every slice, verify, wait for confirmation)
   Learner check: Go offline in DevTools, reload localhost:4173, confirm the "Stockart" heading still appears.
   Commit: `feat: configure PWA service worker, verify offline shell loads`
 
-- [ ] **3. Auth — login, sign-up, setup, AuthGuard, SettingsPanel**
+- [x] **3. Auth — login, sign-up, setup, AuthGuard, SettingsPanel**
   Becomes usable: User can sign up, log in, complete one-time shop setup, reach the POS placeholder, and log out. AuthGuard uses local Dexie flag. SettingsPanel (gear icon) lets user edit shop settings and log out.
   Why now: user_id is required on every Dexie record. Sample products seeded here (after first login). Nothing else saves correctly without auth.
   PRD ref: `prd.md > Login and Setup`, `prd.md > Screens and Layout` (sidebar gear icon)
@@ -38,6 +38,16 @@ Build mode: fast (stop after every slice, verify, wait for confirmation)
   Verify (mechanical): Sign up with a new email → setup form appears → fill it → POS placeholder loads; log out → redirected to /login; log back in → POS loads directly (setup skipped); reload while offline (after prior login) → POS loads without hitting /login.
   Learner check: Sign up, complete setup, log out, log back in, then disable network in DevTools and reload — confirm you land on the POS each time without errors.
   Commit: `feat: auth (login/signup/setup), AuthGuard, SettingsPanel, sample product seed`
+
+- [ ] **3b. Design foundation — "Registre" visual identity on auth screens, sidebar, shell**
+  Becomes usable: Login, setup, sidebar, AppShell, SettingsPanel, SyncIndicator all match the "Registre" design from DESIGN.md and the login screenshot.
+  Why now: fonts and tokens established before POS build so slice 4 starts styled.
+  PRD ref: `prd.md > Look and Feel`
+  Spec ref: `spec.md > Look and Feel`, `design/DESIGN.md`
+  Build: Install @fontsource/ibm-plex-sans + @fontsource/ibm-plex-mono; import in main.tsx. Update index.css with Tailwind v4 @theme tokens (paper, ink, margin, receipt, rule) and global radius-0 rule. Restyle LoginPage + SetupPage as ledger cover (ink block, red strip, paper label plate, inset outline, mono labels, bottom-border inputs, uppercase buttons). Restyle Sidebar (ink bg, 4px margin-red right border, cream underline active state, sync stamp). Restyle SyncIndicator (mono stamp, rotated). Restyle SettingsPanel + AppShell. Update prd.md + spec.md + checklist.md to reflect confirmed font choice (IBM Plex Sans/Mono), pagination (6/page), "Articles" row, French UI labels.
+  Verify (mechanical): `npm run build` succeeds with no TS errors; no requests to fonts.googleapis.com or any CDN in Network tab; login screen matches the provided screenshot visually.
+  Learner check: Open the app, go to /login — confirm it looks like the ledger-cover screenshot (ink background, red strip, paper form card). Open the POS placeholder and confirm the sidebar matches (ink bg, red right rule, underline active state, sync stamp at bottom).
+  Commit: `feat: design foundation — Registre identity, IBM Plex fonts, auth screens, sidebar`
 
 - [ ] **4. POS core — product grid, receipt strip, checkout (neutral styling)**
   Becomes usable: Full POS logic works — tap products, lines appear on receipt, adjust quantities, checkout saves sale to Dexie, stock updates, PDF prompt appears.
@@ -137,3 +147,4 @@ Activity mode: [live app and editor, explicit static fallback, focused alternati
 
 - Tailwind v4 installed instead of v3 — npm resolved the latest version. v4 uses CSS-based config (`@theme` in index.css) instead of `tailwind.config.ts`. All custom tokens moved to `@theme` block in index.css. No product impact.
 - vite-plugin-pwa `generateSW` strategy dropped in favour of `injectManifest` — with Vite 8 (Rolldown), the Workbox async `closeBundle` hook timed out and `sw.js` was never written to `dist/`. Switched to `injectManifest` with a hand-written `src/sw.ts`, which Vite compiles as a normal module. `sw.js` now appears in `dist/` reliably.
+- Font choice changed from Playfair Display/Lora/JetBrains Mono to **IBM Plex Sans + IBM Plex Mono** — learner chose the "Registre" visual direction in slice 3b. Fonts bundled via `@fontsource` packages instead of `/public/fonts/`. Color tokens updated to match DESIGN.md (paper #F3EEE2, ink #1B2A41, margin #B3362B, receipt #FFFDF7, rule #D8D0BC). Product grid is now paginated (6 per page). Receipt has "Articles" row. UI labels are in French. prd.md and spec.md updated accordingly.
