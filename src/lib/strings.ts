@@ -38,6 +38,7 @@ export const S = {
   switchToSignupLink: 'Create a ledger',
   switchToLogin: 'Already have an account?',
   switchToLoginLink: 'Sign in',
+  errorOtherAccountUnsynced: 'Another account on this device still has unsynced data. Sign in with it and reconnect first, so nothing is lost.',
   errorAuthFailed: 'Authentication failed.',
   errorNetwork: 'Network error. Please check your connection.',
 

@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
 import { db } from '../lib/db'
+import { prepareDeviceForUser } from '../lib/localData'
 import { S } from '../lib/strings'
 
 const cover: React.CSSProperties = {
@@ -56,6 +57,12 @@ export default function LoginPage() {
       if (result.error) { setError(result.error.message); return }
       const user = result.data.user
       if (!user) { setError(S.errorAuthFailed); return }
+      // Another account may have used this browser before: never mix their data
+      if ((await prepareDeviceForUser(user.id)) === 'blocked') {
+        await supabase.auth.signOut()
+        setError(S.errorOtherAccountUnsynced)
+        return
+      }
       const existing = await db.shop_settings.where('user_id').equals(user.id).count()
       navigate(existing > 0 ? '/' : '/setup', { replace: true })
     } catch {
@@ -70,23 +77,6 @@ export default function LoginPage() {
       <div style={cover}>
         {/* Red strip */}
         <div style={{ position: 'absolute', left: 0, top: 0, bottom: 0, width: '14px', background: '#B3362B' }} />
-
-        {/* Receipt icon */}
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"
-          style={{ width: '56px', height: '56px', marginBottom: '20px' }} aria-hidden="true">
-          <g transform="rotate(-5 256 256)">
-            <path d="M136 92 H376 V392 L352 412 L328 392 L304 412 L280 392 L256 412 L232 392 L208 412 L184 392 L160 412 L136 392 Z" fill="#F3EEE2"/>
-            <rect x="160" y="92" width="7" height="300" fill="#B3362B"/>
-            <g fill="#1B2A41">
-              <rect x="192" y="140" width="148" height="14"/>
-              <rect x="192" y="186" width="116" height="14"/>
-              <rect x="192" y="232" width="148" height="14"/>
-              <rect x="192" y="278" width="92"  height="14"/>
-              <rect x="192" y="330" width="148" height="22"/>
-            </g>
-          </g>
-        </svg>
-
         <h1 style={{ fontFamily: "'IBM Plex Sans', sans-serif", fontWeight: 600, fontSize: '40px', letterSpacing: '0.18em', color: '#F3EEE2', margin: '0 0 10px', textAlign: 'center' }}>
           {S.appName}
         </h1>
