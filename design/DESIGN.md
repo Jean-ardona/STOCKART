@@ -16,9 +16,9 @@ Light mode only. No gradients, no shadows, no rounded corners (radius 0 everywhe
 
 ## Signature rules
 - Active navigation item: text full opacity with a 2px cream underline (NOT a filled background). Inactive items: 70% opacity.
-- Sidebar: ink background, cream text, 4px red margin rule on its right edge, width 190px. Bottom: sync stamp (mono 11px, 2px cream border, rotated -3deg), text "SYNCED" / "PENDING (N)" / "OFFLINE" / "SIGN IN TO SYNC".
+- Sidebar: ink background, cream text, 4px red margin rule on its right edge, width 190px. Bottom: sync stamp (mono 11px, 2px border, rotated -3deg). Colors: green border + text = SYNCED · amber = PENDING (N) · soft red = OFFLINE · soft red = SIGN IN TO SYNC.
 - Stamps (LOW, OUT, PAID): mono 600, 2px solid margin-red border, margin-red text, slight rotation (-6deg), radius 0. Out-of-stock card is at 50% opacity.
-- Product grid: ledger table look. 3 columns, 1px ink border on the outer top/left and on each cell's right/bottom (no gaps, no cards). Cell: name Sans 600, price Mono 17px, stock Sans 12px at 60% opacity.
+- Product grid: ledger table look. 4 columns x 4 rows = 16 per page, compact cells. 1px ink border on the outer top/left and on each cell's right/bottom (no gaps, no cards). Cell: name Sans 600, price Mono 14px, stock Sans 11px at 60% opacity.
 - Receipt strip: width 330px, receipt background, 1px rule border, 3px margin-red LEFT border, Mono 13px. Shop name Sans 600 17px. Lines separated by 1px dashed lines. − / + buttons: 22px square, 1px ink border, transparent. Total row: top border 2px ink, Mono 18px 600. Checkout button: ink background, cream text, Sans 600 14px, letter-spacing .1em, no radius. PAID stamp: mono 600 20px, 3px margin-red border, rotated -10deg, 85% opacity.
 - Page header on each main screen: title Sans 600 26px on the left, date + time Mono 12px at 60% opacity on the right.
 - Search bar: 1px ink border, no radius, transparent, placeholder "Search products   /".
@@ -36,3 +36,9 @@ Same ledger style: paper background, 1px ink borders, mono labels, ink buttons.
 
 ## Animations (CSS only, later slice)
 New receipt line "prints" in from below and the paper moves up one notch (200ms steps); strike-through then fade on quantity 0; PAID stamp "stamps" with a quick scale-down from 1.4 to 1; tear-off slide up on checkout.
+
+## App icon
+Receipt motif: cream paper shape with red left rule and ink text lines, rotated -5°, on ink background. Used as favicon.svg, apple-touch-icon.png, and PWA icons (192px, 512px). Inline SVG version appears on the login, setup, and loading screens.
+
+## Navigation (as shipped)
+Home screen is Dashboard (`/`). POS is at `/pos`. Orders at `/orders`. Stock at `/stock`. The loading screen (`/loading`) is also the AuthGuard loading state.

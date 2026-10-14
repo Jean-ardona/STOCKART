@@ -12,16 +12,16 @@ Source: `scope.md > Who It's For`, `scope.md > The Unique Kernel`.
 
 ## The Core Journey
 
-1. **First launch (online):** User lands on a login/sign-up screen styled like the cover of a shopkeeper's ledger. Email + password only. No other content on this screen.
-2. **One-time setup:** After first login, a brief setup form collects shop name and contact details. These appear at the top of every receipt. No further onboarding.
-3. **POS screen (home):** User lands directly on the POS — product grid on the left, empty receipt strip on the right, ready for the first sale.
-4. **Sample products:** On first launch, ~15 sample products are preloaded so the POS is never empty. Useful for demo.
-5. **Making a sale:** User taps products → lines print onto the receipt one by one → adjusts quantities with − / + → optionally enters a customer name → clicks Checkout.
-6. **Checkout:** Receipt gets a "PAID" stamp, tears off with an animation, and a "Download PDF" prompt appears briefly. POS resets to a new empty receipt with the next sale number.
-7. **Offline:** If there is no internet, sales still complete. A sync indicator shows "Pending". When the connection returns, data syncs to Supabase and the indicator shows "Synced".
-8. **Later launches:** Session is remembered. App opens straight to the POS, even offline.
-9. **Stock management:** User navigates to the Stock screen to view products, add/edit/archive, restock, or adjust stock levels. History tab shows past restock movements.
-10. **Dashboard:** User checks today's revenue and sales count, scans the hand-drawn bar chart, and acts on the low-stock list via direct Restock buttons.
+1. **First launch (online):** User lands on a login/sign-up screen styled like the cover of a shopkeeper's ledger. Email + password only.
+2. **One-time setup:** After first login, a brief setup form collects shop name, contact details, currency code and decimal places. These appear at the top of every receipt. ~30 sample products are seeded (keyed to `user_id` so accounts never mix data).
+3. **Dashboard (home):** User lands on the Dashboard — today's revenue vs yesterday, sales count, 7-day total, stock value, hand-drawn sales chart, top products, recent sales, low-stock list.
+4. **Making a sale:** User navigates to POS (`/pos`) → taps products → lines print onto the receipt one by one → adjusts quantities with − / + → optionally enters a customer name → clicks Checkout.
+5. **Checkout:** Receipt gets a "PAID" stamp, tears off with an animation, and a "Download PDF" prompt appears briefly. POS resets to a new empty receipt with the next sale number.
+6. **Offline:** If there is no internet, sales still complete. Sync stamp shows amber "PENDING". When the connection returns, data syncs and the stamp turns green "SYNCED".
+7. **Later launches:** Session is remembered. App opens straight to Dashboard, even offline.
+8. **Orders:** User navigates to Orders to browse all sales grouped by day, preview any receipt, and print it again. Export CSV of all operations for any period.
+9. **Stock management:** Add/edit/archive products, restock, adjust stock levels, view movement history.
+10. **Dashboard:** KPI boxes, chart, top products, recent sales, low-stock list.
 
 ---
 
@@ -29,15 +29,16 @@ Source: `scope.md > Who It's For`, `scope.md > The Unique Kernel`.
 
 Three screens, accessed from a discreet left sidebar:
 
-| # | Screen | Sidebar label |
-|---|--------|--------------|
-| 1 | POS | POS |
-| 2 | Stock (with History tab) | Stock |
-| 3 | Dashboard | Dashboard |
+| # | Screen | Route | Sidebar label |
+|---|--------|-------|--------------|
+| 1 | Dashboard | `/` | Dashboard |
+| 2 | POS | `/pos` | POS |
+| 3 | Orders | `/orders` | Orders |
+| 4 | Stock (with History tab) | `/stock` | Stock |
 
-Plus two overlay surfaces: Login/Sign-up (full screen, no sidebar), and one-time Shop Setup (modal or full screen, shown once after first login).
+Plus two overlay surfaces: Login/Sign-up (`/login`), and one-time Shop Setup (`/setup`), and a Loading screen (`/loading`, also shown while AuthGuard checks Dexie).
 
-The sidebar is always visible on the three main screens. It is discreet — not a dominant panel. Active screen is indicated by an ink-style underline or stamp mark. A gear icon at the bottom of the sidebar opens a settings form (shop name, contact details, currency). The Log Out button lives in this same settings panel.
+The sidebar is always visible on the four main screens. Active screen: ink-style underline. A gear icon at the bottom opens a settings panel (shop name, contact, currency, Log Out).
 
 ---
 
@@ -54,8 +55,9 @@ Source: `design/DESIGN.md` ("Registre" direction), `scope.md > Inspiration & Ide
 - **Receipt strip:** 330px wide, receipt background, 1px rule border, 3px margin-red LEFT border, Mono 13px. "Articles" row (total qty) above TOTAL. Checkout button: ink bg, cream text, Sans 600 14px, letter-spacing .1em.
 - **Login / setup screens:** ink cover block (520×560) with 14px margin-red left strip. Paper-colored label plate with inset 1px ink outline. Mono 11px uppercase labels, inputs with bottom-border only.
 - **Charts:** plain SVG/CSS, hand-drawn pen-stroke aesthetic, no chart library.
-- **Animations:** CSS-only. No animation libraries. No sounds.
-- **Explicitly avoided:** Purple, gradients, shadows, rounded corners, generic card grids, Inter/Roboto, anything that looks AI-generated.
+- **Sync stamp colors:** green = SYNCED, amber = PENDING (N), soft red = OFFLINE or SIGN IN TO SYNC.
+- **App icon and PWA icons:** real logo (receipt motif) used as favicon, apple-touch-icon, and PWA icons (192px, 512px).
+- **Language:** English only. All UI strings centralized in `src/lib/strings.ts` for future translation.
 
 ---
 
@@ -124,21 +126,31 @@ Source: `design/DESIGN.md` ("Registre" direction), `scope.md > Inspiration & Ide
 
 ### Dashboard Screen
 
-**Summary row (top)**
-- Today's total revenue (sum of completed sales for the current calendar day).
-- Today's number of completed sales.
+**KPI row (top)**
+- 4 boxes: today's revenue (with % delta vs yesterday), today's sales count, last 7 days revenue, stock value.
 
 **Sales chart**
-- Day/Week toggle.
-- Day view: last 7 days, one bar per day. Horizontal axis: dates. Vertical axis: revenue.
-- Week view: last 4 weeks, one bar per week. Horizontal axis: week labels. Vertical axis: revenue.
-- Number of sales shown on hover over a bar.
-- Rendered in plain SVG/CSS with a hand-drawn, pen-stroke aesthetic. No chart library.
+- Day/Week toggle. Day view: last 7 days. Week view: last 4 weeks.
+- Rendered in plain SVG/CSS, hand-drawn pen-stroke aesthetic. No chart library.
+- Hover shows sale count per bar.
+
+**Top products**
+- Top 5 products by revenue for the current week.
+
+**Recent sales**
+- Last 6 completed sales with date, sale number, total.
 
 **Low-stock list**
-- All products currently at or below their low-stock threshold.
-- Each row: product name, current stock, threshold.
-- "Restock" button per row — opens the restock form directly (same form as on the Stock screen).
+- Products at or below threshold. "Restock" button per row.
+
+### Orders Screen
+
+- All sales grouped by day, most recent first.
+- Each sale row: sale number, time, customer name (if any), total, item count.
+- Selecting a sale shows a receipt preview (using price/name snapshots — immutable).
+- "Print again" button triggers PDF receipt via iframe (same as post-checkout).
+- Search bar: filter by sale number or customer name.
+- **Export CSV:** select a date range, download a CSV of all operations (sales + stock movements) for that period.
 
 ---
 
@@ -160,7 +172,14 @@ Source: `design/DESIGN.md` ("Registre" direction), `scope.md > Inspiration & Ide
 
 ## Product Decisions
 
-- **POS as home screen** — The shop owner's primary task is selling, not reporting. Opening on the POS removes one navigation step per session.
+- **Dashboard as home screen** — Changed from POS. The shop owner benefits from a daily overview before starting to sell.
+- **POS at `/pos`** — Moved from `/` to make room for Dashboard as home.
+- **Orders page** — Added during build. Gives the owner access to full sale history and receipt reprinting without cluttering the POS.
+- **~30 sample products seeded (not 15)** — More realistic for demoing pagination and dashboard charts.
+- **Accounts isolation** — Sample data and all records are keyed to `user_id`; multiple accounts on the same browser never see each other's data.
+- **Colored sync stamp** — Green (SYNCED), amber (PENDING), soft red (OFFLINE / SIGN IN TO SYNC). More immediately readable than text alone.
+- **CSV export delivered** — Not deferred; shipped as part of the Orders screen.
+- **PDF receipt via iframe** — Uses `printReceipt.ts` (iframe approach) instead of `window.print()` + `@media print`, so the receipt prints cleanly regardless of the app's CSS.
 - **Sample products on first launch** — Ensures the demo is never blocked by an empty state; also useful for real first-time users.
 - **Soft delete only** — Archiving preserves historical sales data integrity. Hard delete is explicitly cut.
 - **Stock movements, not direct edits** — Restocks and adjustments create a movement record, making stock history auditable. Direct stock edits are not allowed.
@@ -179,24 +198,21 @@ Source: `design/DESIGN.md` ("Registre" direction), `scope.md > Inspiration & Ide
 
 ---
 
-## What We're Building
+## What We're Building (as shipped)
 
-In priority order (cut from the bottom if time runs short):
-
-1. POS screen — product grid, receipt strip with print animation, checkout with PAID stamp and tear-off, PDF receipt download (browser print stylesheet), sync indicator. Full paper-ledger visual identity. Locally bundled fonts.
-2. Stock screen — products tab (add, edit, archive, restock, adjustment), history tab.
-3. Supabase auth (login/sign-up, one-time setup + settings panel) + offline-first sync (Dexie/IndexedDB, one-way push to Supabase on reconnect, auto-retry) + PWA installable.
-4. Dashboard — summary row, hand-drawn SVG sales chart, low-stock list with restock shortcut.
-5. CSV export *(stretch goal only — cut if time is short)*.
+1. Dashboard — 4 KPI boxes, SVG chart, top products, recent sales, low-stock list. Home screen (`/`).
+2. POS screen (`/pos`) — product grid (16/page, paginated), receipt strip with print animation, checkout, PDF receipt.
+3. Orders screen (`/orders`) — sale history, receipt preview, print again, CSV export.
+4. Stock screen (`/stock`) — products tab (add, edit, archive, restock, adjustment), history tab.
+5. Auth + offline-first sync + PWA — Supabase Auth, Dexie/IndexedDB, one-way push, colored sync stamp, accounts isolation.
 
 ---
 
 ## Deferred From the POC
 
-- **Customers & debts module** — Separate data model and UI, no impact on the core demo. Bonus if time allows post-submission.
-- **Re-activating archived products** — Useful but not needed for the demo.
-- **PDF history / receipt archive** — PDFs are downloaded at checkout only; no stored receipt browser.
-- **CSV export** — Secondary to PDF receipt; cut if time is short.
+- **Customers & debts module** — Post-submission roadmap.
+- **Re-activating archived products** — Not needed for the demo.
+- **Two-way sync / multi-device** — One-way push is sufficient for single-device PoC.
 
 ---
 

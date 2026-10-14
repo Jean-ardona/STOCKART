@@ -14,7 +14,7 @@ The point of sale screen behaves like a real thermal receipt printer: every time
 A small independent shop owner managing their store alone — someone who runs a physical counter, knows their products by name, and currently tracks stock and sales in a notebook or a generic spreadsheet.
 
 ## The Core Loop
-They open the POS screen, tap items to add them to the receipt (lines print one by one), adjust quantities with − / + buttons, see the live total, and check out. If the internet is off, the sale still goes through. When it comes back, everything syncs.
+They open the app and land on the **Dashboard** for a quick overview of the day. They navigate to **POS** to make sales — tapping items to print them on the receipt one by one, adjusting quantities, and checking out. If the internet is off, the sale still goes through. When it comes back, everything syncs.
 
 ## Inspiration & Identity
 A shopkeeper's paper ledger: warm off-white/cream background, ink-blue as the primary accent, a red margin line, serif typography (something with character — not Inter or Roboto), stamp and rubber-ink details. The feel is analog, tactile, and honest. Deliberately unlike any AI-generated UI. No purple gradients, no generic card grids, no default sans-serif fonts.
@@ -25,8 +25,8 @@ A shopkeeper's paper ledger: warm off-white/cream background, ink-blue as the pr
 ## What "Working" Looks Like
 The demo shows:
 1. A sale made entirely offline (network disabled) — items added to the receipt one by one, checkout completes, stock updates locally.
-2. The connection is restored — the sale syncs to Supabase visibly.
-3. A quick tour of the stock list, a restock purchase, the dashboard charts, and a PDF/Excel export.
+2. The connection is restored — the sale syncs to Supabase visibly (sync stamp turns green).
+3. A quick tour: Orders page (receipt preview + print again), Stock screen, Dashboard (4 KPI boxes, chart, top products), and CSV export.
 
 The "oh, that's cool" beat: the thermal receipt animation in the POS, and the sync moment when the offline sale appears in the cloud.
 
@@ -34,29 +34,31 @@ The "oh, that's cool" beat: the thermal receipt animation in the POS, and the sy
 
 Priority order — if time runs short, cut from the bottom:
 
-1. **POS + stock management** *(must ship)*
-   Cart-as-thermal-receipt with line-by-line print animation, − / + per item, live total, checkout. Add/edit/delete products, current stock levels. Full paper-ledger visual identity throughout.
+1. **POS + stock management** *(shipped)*
+   Cart-as-thermal-receipt with line-by-line print animation, − / + per item, live total, checkout. Add/edit/archive products, current stock levels. Full paper-ledger visual identity throughout.
 
-2. **Restocking / purchasing** *(high priority)*
+2. **Restocking / purchasing** *(shipped)*
    Record a restock purchase; increases stock levels.
 
-3. **Supabase auth + offline-first sync** *(required for the demo)*
-   Real user accounts (login/logout). Works with no internet via Dexie/IndexedDB; syncs to Supabase when connection returns. PWA installable.
+3. **Supabase auth + offline-first sync** *(shipped)*
+   Real user accounts (login/logout). Works with no internet via Dexie/IndexedDB; syncs to Supabase when connection returns. PWA installable. Accounts isolation: each device scope is keyed to `user_id` so multiple accounts on one browser never mix data.
 
-4. **Dashboard** *(minimal)*
-   One sales chart (day/week toggle). One low-stock list. Nothing else.
+4. **Dashboard** *(shipped — richer than planned)*
+   4 KPI boxes (today's revenue vs yesterday, sales count, 7-day total, stock value), hand-drawn SVG sales chart (day/week toggle), top 5 products, recent sales list, low-stock list with Restock shortcut.
 
-5. **Export** *(nice to have)*
-   The POS receipt is exportable as a PDF — this is the must-have export. The receipt includes: automatic sequential sale number, shop name and contact details at the top, optional customer name field. If a customer name is entered, the receipt serves as an informal invoice. No tax calculation, no legal format. CSV export of sales data as a secondary option.
+5. **Orders page** *(shipped — added during build)*
+   Full order history grouped by day. Receipt preview beside each sale. "Print again" at any time using price/name snapshots. Search by sale number or customer name.
+
+6. **Export** *(shipped)*
+   PDF receipt via iframe print (no library). CSV export of all operations (sales + stock movements) for any selected period.
 
 ## Later
-- Customers & debts (who owes how much) — deferred, bonus if time allows after submission
+- Customers & debts (who owes how much) — deferred post-submission
 
 ## Explicitly Cut
-- **Customers & debts:** Deferred — adds a full data model and UI surface with no impact on the core demo. Bonus if time allows post-submission.
-- **Excel export:** Replaced by PDF receipt export (already built as part of POS) + CSV sales data. Excel is not needed.
-- **Best-selling products chart:** Cut from dashboard — one sales chart + low-stock list is enough.
+- **Customers & debts:** Deferred — no impact on the core demo.
+- **Excel export:** Replaced by PDF receipt + CSV export (both shipped).
 - **Multi-user / roles / permissions:** Out of scope for a solo PoC.
-- **Mobile layout:** Desktop-first by design; responsive polish is post-submission.
+- **Mobile layout:** Desktop-first by design.
 - **AI features inside the app:** Explicitly not wanted.
-- **Paid services:** Supabase free tier only.
+- **Paid services:** Supabase and Vercel free tiers only.
