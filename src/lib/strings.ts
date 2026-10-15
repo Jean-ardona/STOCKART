@@ -19,6 +19,10 @@ export const S = {
   syncPending: (n: number) => `PENDING (${n})`,
   syncOffline: 'OFFLINE',
   syncOfflinePending: (n: number) => `OFFLINE · ${n} PENDING`,
+  syncDetailQueued: (sales: number, changes: number) =>
+    sales > 0 ? `${sales} SALE${sales === 1 ? '' : 'S'}` : `${changes} CHANGE${changes === 1 ? '' : 'S'}`,
+  syncDetailOffline: (sales: number, changes: number) =>
+    sales > 0 ? `${sales} SALE${sales === 1 ? '' : 'S'} PENDING` : `${changes} CHANGE${changes === 1 ? '' : 'S'} PENDING`,
   syncPendingLabel: (sales: number, changes: number) =>
     sales > 0 ? `PENDING · ${sales} SALE${sales === 1 ? '' : 'S'}` : `PENDING · ${changes} CHANGE${changes === 1 ? '' : 'S'}`,
   syncOfflineLabel: (sales: number, changes: number) =>

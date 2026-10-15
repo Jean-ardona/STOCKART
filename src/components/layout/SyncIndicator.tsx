@@ -12,12 +12,19 @@ const TONE: Record<SyncStatus, string> = {
 
 export default function SyncIndicator() {
   const { status, pendingCount, pendingSales } = useSyncStatus()
-  const label =
-    status === 'offline' && pendingCount > 0 ? S.syncOfflineLabel(pendingSales, pendingCount) :
-    status === 'pending'    ? S.syncPendingLabel(pendingSales, pendingCount) :
-    status === 'offline'    ? S.syncOffline :
-    status === 'auth-error' ? S.syncAuthError :
-                              S.syncSynced
+
+  // Two short lines instead of one long one, so the stamp always fits the sidebar
+  let main: string = S.syncSynced
+  let detail = ''
+  if (status === 'offline') {
+    main = S.syncOffline
+    if (pendingCount > 0) detail = S.syncDetailOffline(pendingSales, pendingCount)
+  } else if (status === 'pending') {
+    main = 'PENDING'
+    detail = S.syncDetailQueued(pendingSales, pendingCount)
+  } else if (status === 'auth-error') {
+    main = S.syncAuthError
+  }
   const color = TONE[status]
 
   return (
@@ -33,27 +40,29 @@ export default function SyncIndicator() {
           display: 'inline-flex',
           alignItems: 'center',
           gap: '7px',
+          maxWidth: 'calc(100% - 8px)',
+          boxSizing: 'border-box',
           fontFamily: "'IBM Plex Mono', monospace",
-          fontSize: '11px',
-          fontWeight: 600,
           color,
           background: `${color}1F`,
           border: `2px solid ${color}`,
           padding: '3px 7px',
           transform: 'rotate(-3deg)',
           letterSpacing: '0.05em',
-          whiteSpace: 'nowrap',
         }}
       >
         <span
           className="stockart-dot"
           aria-hidden="true"
           style={{
-            width: '7px', height: '7px', background: color, display: 'inline-block',
+            width: '7px', height: '7px', flexShrink: 0, background: color, display: 'inline-block',
             animation: status === 'pending' ? 'stockart-pulse 1.1s ease-in-out infinite' : undefined,
           }}
         />
-        {label}
+        <span style={{ display: 'flex', flexDirection: 'column', minWidth: 0 }}>
+          <span style={{ fontSize: '11px', fontWeight: 600, whiteSpace: 'nowrap' }}>{main}</span>
+          {detail && <span style={{ fontSize: '10px', fontWeight: 400, whiteSpace: 'nowrap', opacity: 0.9 }}>{detail}</span>}
+        </span>
       </span>
     </div>
   )
