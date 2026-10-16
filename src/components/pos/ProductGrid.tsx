@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
+import { Link } from 'react-router-dom'
 import ProductCard from './ProductCard'
 import { S } from '../../lib/strings'
 import type { Product, ShopSettings } from '../../types'
@@ -64,6 +65,7 @@ export default function ProductGrid({ products, settings, onTap }: Props) {
 
       {/* Grid — 4 columns × 4 rows, fills available height */}
       <div style={{
+        position: 'relative',
         display: 'grid',
         gridTemplateColumns: 'repeat(4, 1fr)',
         gridTemplateRows: 'repeat(4, 1fr)',
@@ -78,6 +80,18 @@ export default function ProductGrid({ products, settings, onTap }: Props) {
             <ProductCard product={product} settings={settings} onTap={onTap} />
           </div>
         ))}
+        {products.length === 0 && (
+          <div style={{
+            position: 'absolute', inset: 0, zIndex: 1, display: 'flex', flexDirection: 'column',
+            alignItems: 'center', justifyContent: 'center', gap: '14px', textAlign: 'center',
+          }}>
+            <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '13px', opacity: 0.7 }}>{S.posNoProducts}</span>
+            <Link to="/stock" style={{
+              background: '#1B2A41', color: '#F3EEE2', padding: '12px 18px', textDecoration: 'none',
+              fontFamily: "'IBM Plex Sans', sans-serif", fontWeight: 600, fontSize: '13px', letterSpacing: '0.1em',
+            }}>{S.posGoToStock}</Link>
+          </div>
+        )}
         {/* Fill empty cells to maintain grid shape */}
         {Array.from({ length: PAGE_SIZE - paged.length }).map((_, i) => (
           <div key={`empty-${i}`} style={{
@@ -94,7 +108,7 @@ export default function ProductGrid({ products, settings, onTap }: Props) {
         fontFamily: "'IBM Plex Mono', monospace", fontSize: '12px', color: '#1B2A41',
       }}>
         <span style={{ opacity: 0.7 }}>
-          {S.paginationOf(
+          {filtered.length === 0 ? S.paginationEmpty : S.paginationOf(
             (safePage - 1) * PAGE_SIZE + 1,
             Math.min(safePage * PAGE_SIZE, filtered.length),
             filtered.length

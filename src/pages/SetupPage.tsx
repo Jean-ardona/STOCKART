@@ -40,6 +40,7 @@ export default function SetupPage() {
   const [contact, setContact] = useState('')
   const [currencyCode, setCurrencyCode] = useState('USD')
   const [decimalPlaces, setDecimalPlaces] = useState<0 | 2>(2)
+  const [withSamples, setWithSamples] = useState(true)
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState('')
 
@@ -62,7 +63,7 @@ export default function SetupPage() {
         })
         await db.sync_queue.add({ table_name: 'shop_settings', record_id: settingsId, operation: 'upsert', created_at: now, attempts: 0 })
       })
-      await seedSampleProducts(user.id)
+      if (withSamples) await seedSampleProducts(user.id)
       navigate('/', { replace: true })
     } catch (err) {
       console.error(err)
@@ -76,23 +77,6 @@ export default function SetupPage() {
     <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#F3EEE2' }}>
       <div style={cover}>
         <div style={{ position: 'absolute', left: 0, top: 0, bottom: 0, width: '14px', background: '#B3362B' }} />
-
-        {/* Receipt icon */}
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"
-          style={{ width: '56px', height: '56px', marginBottom: '20px' }} aria-hidden="true">
-          <g transform="rotate(-5 256 256)">
-            <path d="M136 92 H376 V392 L352 412 L328 392 L304 412 L280 392 L256 412 L232 392 L208 412 L184 392 L160 412 L136 392 Z" fill="#F3EEE2"/>
-            <rect x="160" y="92" width="7" height="300" fill="#B3362B"/>
-            <g fill="#1B2A41">
-              <rect x="192" y="140" width="148" height="14"/>
-              <rect x="192" y="186" width="116" height="14"/>
-              <rect x="192" y="232" width="148" height="14"/>
-              <rect x="192" y="278" width="92"  height="14"/>
-              <rect x="192" y="330" width="148" height="22"/>
-            </g>
-          </g>
-        </svg>
-
         <h1 style={{ fontFamily: "'IBM Plex Sans', sans-serif", fontWeight: 600, fontSize: '40px', letterSpacing: '0.18em', color: '#F3EEE2', margin: '0 0 10px', textAlign: 'center' }}>
           {S.appName}
         </h1>
@@ -127,6 +111,13 @@ export default function SetupPage() {
                 </select>
               </div>
             </div>
+            <label style={{ display: 'flex', alignItems: 'flex-start', gap: '10px', marginBottom: '20px', cursor: 'pointer' }}>
+              <input type="checkbox" checked={withSamples} onChange={e => setWithSamples(e.target.checked)} style={{ marginTop: '3px' }} />
+              <span>
+                <span style={{ display: 'block', fontFamily: "'IBM Plex Sans', sans-serif", fontSize: '14px', fontWeight: 600, color: '#1B2A41' }}>{S.setupSamplesLabel}</span>
+                <span style={{ display: 'block', fontFamily: "'IBM Plex Mono', monospace", fontSize: '11px', color: 'rgba(27,42,65,0.7)', marginTop: '2px' }}>{S.setupSamplesHint}</span>
+              </span>
+            </label>
             {error && <p style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '11px', color: '#B3362B', margin: '0 0 16px' }}>{error}</p>}
             <button type="submit" disabled={saving} style={btnStyle}>
               {saving ? S.btnSaving : S.btnSave}

@@ -25,6 +25,8 @@ dist-ssr
 
 # Personal learning context — keep out of commits by default
 devpost/learner-profile.md
+devpost/demo-script.md
+video-slides
 
 # Environment secrets
 .env
